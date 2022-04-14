@@ -71,10 +71,10 @@ func (a *Action) recreateDnsResources(node nodes.Node) error {
 		"delete", "cm", "kube-root-ca.crt", "-n", "kube-public",
 	).Run()
 
-	_ = node.Command(
-		"kubectl", "--kubeconfig=/etc/kubernetes/admin.conf",
-		"delete", "pods", "-l", "app=kindnet", "-n", "kube-system",
-	).Run()
+	//_ = node.Command(
+	//	"kubectl", "--kubeconfig=/etc/kubernetes/admin.conf",
+	//	"delete", "pods", "-l", "app=kindnet", "-n", "kube-system",
+	//).Run()
 
 	_ = node.Command(
 		"kubectl", "--kubeconfig=/etc/kubernetes/admin.conf",
@@ -86,8 +86,10 @@ func (a *Action) recreateDnsResources(node nodes.Node) error {
 		"rollout", "restart", "deployment/coredns", "-n", "kube-system",
 	).Run()
 
-	return node.Command(
+	_ = node.Command(
 		"kubectl", "--kubeconfig=/etc/kubernetes/admin.conf",
 		"wait", "--for=condition=available", "--timeout=300s", "deployment/coredns",
 	).Run()
+
+	return nil
 }

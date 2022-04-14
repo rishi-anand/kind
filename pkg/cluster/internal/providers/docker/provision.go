@@ -34,6 +34,7 @@ import (
 	"sigs.k8s.io/kind/pkg/internal/apis/config"
 )
 
+//rishi create docker volume before this function
 // planCreation creates a slice of funcs that will create the containers
 func planCreation(cfg *config.Cluster, networkName string) (createContainerFuncs []func() error, err error) {
 	// we need to know all the names for NO_PROXY
@@ -202,6 +203,7 @@ func commonArgs(cluster string, cfg *config.Cluster, networkName string, nodeNam
 	return args, nil
 }
 
+//rishi docker provision commands
 func runArgsForNode(node *config.Node, clusterIPFamily config.ClusterIPFamily, name string, args []string) ([]string, error) {
 	args = append([]string{
 		"--hostname", name, // make hostname match container name
@@ -224,6 +226,7 @@ func runArgsForNode(node *config.Node, clusterIPFamily config.ClusterIPFamily, n
 		// running kind in kind for "party tricks"
 		// (please don't depend on doing this though!)
 		"--volume", "/var",
+		//"--volume", "spectro-system-cluster:/var",
 		// some k8s things want to read /lib/modules
 		"--volume", "/lib/modules:/lib/modules:ro",
 		// propagate KIND_EXPERIMENTAL_CONTAINERD_SNAPSHOTTER to the entrypoint script
