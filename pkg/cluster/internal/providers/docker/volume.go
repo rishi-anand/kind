@@ -2,9 +2,9 @@ package docker
 
 import (
 	"fmt"
+	"sigs.k8s.io/kind/pkg/exec"
 	"sigs.k8s.io/kind/pkg/internal/cli"
 	"strings"
-	"sigs.k8s.io/kind/pkg/exec"
 )
 
 const fixedVolumeName = "spectro-system-cluster"
