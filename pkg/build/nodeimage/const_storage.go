@@ -25,6 +25,7 @@ NOTE: we have customized it in the following ways:
 - install as the default storage class
 */
 
+//rishi come here for local path provisioning
 var defaultStorageImages = []string{"docker.io/rancher/local-path-provisioner:v0.0.14", "k8s.gcr.io/build-image/debian-base:buster-v1.7.2"}
 
 const defaultStorageManifest = `
@@ -146,7 +147,7 @@ data:
                 "nodePathMap":[
                 {
                         "node":"DEFAULT_PATH_FOR_NON_LISTED_NODES",
-                        "paths":["/var/local-path-provisioner"]
+                        "paths":["/opt/data/content"]
                 }
                 ]
         }

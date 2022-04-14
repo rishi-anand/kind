@@ -19,6 +19,7 @@ package create
 import (
 	"fmt"
 	"math/rand"
+	"sigs.k8s.io/kind/pkg/cluster/internal/create/actions/provisiondns"
 	"time"
 
 	"github.com/alessio/shellescape"
@@ -122,14 +123,20 @@ func Cluster(logger log.Logger, p providers.Provider, opts *ClusterOptions) erro
 			)
 		}
 		// add remaining steps
+		//rishi come here for each step
 		actionsToRun = append(actionsToRun,
 			installstorage.NewAction(),                // install StorageClass
 			kubeadmjoin.NewAction(),                   // run kubeadm join
 			waitforready.NewAction(opts.WaitForReady), // wait for cluster readiness
 		)
+
+		actionsToRun = append(actionsToRun,
+			provisiondns.NewAction(opts.WaitForReady), // delete root ca key
+		)
 	}
 
 	// run all actions
+	//rishi check here -> cni is being called from here
 	actionsContext := actions.NewActionContext(logger, status, p, opts.Config)
 	for _, action := range actionsToRun {
 		if err := action.Execute(actionsContext); err != nil {
