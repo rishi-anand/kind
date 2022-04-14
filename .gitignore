@@ -20,3 +20,5 @@
 *.sublime-project
 *.sublime-workspace
 *~
+build.sh
+alocal
