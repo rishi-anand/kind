@@ -70,25 +70,32 @@ func (a *Action) recreateDnsResources(node nodes.Node) error {
 		"kubectl", "--kubeconfig=/etc/kubernetes/admin.conf",
 		"delete", "cm", "kube-root-ca.crt", "-n", "kube-public",
 	).Run()
-	//
-	//_ = node.Command(
-	//	"kubectl", "--kubeconfig=/etc/kubernetes/admin.conf",
-	//	"delete", "pods", "-l", "app=kindnet", "-n", "kube-system",
-	//).Run()
 
 	_ = node.Command(
 		"kubectl", "--kubeconfig=/etc/kubernetes/admin.conf",
-		"delete", "pods", "-l", "k8s-app=kube-proxy", "-n", "kube-system",
+		"delete", "pods", "-l", "app=kindnet", "-n", "kube-system",
 	).Run()
 
 	_ = node.Command(
 		"kubectl", "--kubeconfig=/etc/kubernetes/admin.conf",
-		"rollout", "restart", "deployment/coredns", "-n", "kube-system",
+		"delete", "pods", "-l", "k8s-app=kube-proxy", "-n", "kube-system", "--grace-period=0", "--force",
+	).Run()
+
+	_ = node.Command(
+		"kubectl", "--kubeconfig=/etc/kubernetes/admin.conf",
+		"rollout", "restart", "deployment/coredns", "-n", "kube-system",  "--grace-period=0", "--force",
+	).Run()
+
+	time.Sleep(5 * time.Second)
+
+	_ =  node.Command(
+		"kubectl", "--kubeconfig=/etc/kubernetes/admin.conf",
+		"wait", "--for=condition=ready", "pod", "-l", "k8s-app=kube-proxy", "--timeout=300s", "-A",
 	).Run()
 
 	_ =  node.Command(
 		"kubectl", "--kubeconfig=/etc/kubernetes/admin.conf",
-		"wait", "--for=condition=available", "--timeout=300s", "deployment/coredns",
+		"wait", "--for=condition=available", "--timeout=300s", "deployment/coredns", "-n", "kube-system",
 	).Run()
 
 	return nil

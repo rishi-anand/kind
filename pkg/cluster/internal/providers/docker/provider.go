@@ -64,6 +64,10 @@ func (p *provider) String() string {
 // Provision is part of the providers.Provider interface
 func (p *provider) Provision(status *cli.Status, cfg *config.Cluster) (err error) {
 	// TODO: validate cfg
+	//
+	//if err := ensureVolume(fixedVolumeName, status); err != nil {
+	//	return err
+	//}
 	// ensure node images are pulled before actually provisioning
 	if err := ensureNodeImages(p.logger, status, cfg); err != nil {
 		return err
