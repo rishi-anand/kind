@@ -88,7 +88,7 @@ func (a *Action) recreateDnsResources(node nodes.Node) error {
 
 	_ = node.Command(
 		"kubectl", "--kubeconfig=/etc/kubernetes/admin.conf",
-		"wait", "--for=condition=available", "--timeout=300s", "deployment/coredns",
+		"wait", "--for=condition=available", "--timeout=300s", "deployment/coredns", "-n", "kube-system",
 	).Run()
 
 	return nil
