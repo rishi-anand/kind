@@ -34,7 +34,6 @@ import (
 	"sigs.k8s.io/kind/pkg/internal/apis/config"
 )
 
-//rishi create docker volume before this function
 // planCreation creates a slice of funcs that will create the containers
 func planCreation(cfg *config.Cluster, networkName string) (createContainerFuncs []func() error, err error) {
 	// we need to know all the names for NO_PROXY
@@ -203,7 +202,6 @@ func commonArgs(cluster string, cfg *config.Cluster, networkName string, nodeNam
 	return args, nil
 }
 
-//rishi docker provision commands
 func runArgsForNode(node *config.Node, clusterIPFamily config.ClusterIPFamily, name string, args []string) ([]string, error) {
 	args = append([]string{
 		"--hostname", name, // make hostname match container name

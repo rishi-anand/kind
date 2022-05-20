@@ -123,7 +123,6 @@ func Cluster(logger log.Logger, p providers.Provider, opts *ClusterOptions) erro
 			)
 		}
 		// add remaining steps
-		//rishi come here for each step
 		actionsToRun = append(actionsToRun,
 			installstorage.NewAction(),                // install StorageClass
 			kubeadmjoin.NewAction(),                   // run kubeadm join
@@ -136,7 +135,6 @@ func Cluster(logger log.Logger, p providers.Provider, opts *ClusterOptions) erro
 	}
 
 	// run all actions
-	//rishi check here -> cni is being called from here
 	actionsContext := actions.NewActionContext(logger, status, p, opts.Config)
 	for _, action := range actionsToRun {
 		if err := action.Execute(actionsContext); err != nil {
